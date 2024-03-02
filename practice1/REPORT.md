@@ -59,4 +59,4 @@ The objective of this assignment is to study and compare the computational compl
 - As the number of points increases, the performance degradation is more noticeable in Polar and Spherical coordinate systems.
 - Spherical is the slowest one.
 
-![Result of the program computaitions](./practice1/result.png)
+![Result of the program computaitions](./result.png)
