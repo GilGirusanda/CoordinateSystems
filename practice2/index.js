@@ -197,7 +197,7 @@ function evaluateWindowSize(data, windowSize) {
   const filteredData = movingAverageFilter(data, windowSize);
 
   // Shift the orig signal by a half of win size
-  const shiftedData = data.slice(windowSize / 2);
+  const shiftedData = signal.slice(windowSize / 2);
 
   // Mean square evaluation
   const mse =

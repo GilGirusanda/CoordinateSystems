@@ -12,26 +12,26 @@ low-pass filters (LPF).
 
 ## Results Summary for windows size of MA Filter from 1 till 20:
 
-- MSE for window size 0: 0.9710911521165326
-- MSE for window size 1: 0
-- MSE for window size 2: 0.5021125740242247
-- MSE for window size 3: 0.44906185516608393
-- MSE for window size 4: 0.43015297366893646
-- MSE for window size 5: 0.41960930676044095
-- MSE for window size 6: 0.42656666068133475
-- MSE for window size 7: 0.4256823428134236
-- MSE for window size 8: 0.44307395434091806
-- MSE for window size 9: 0.44790472919075236
-- MSE for window size 10: 0.4715144199593756
-- MSE for window size 11: 0.47899984361489023
-- MSE for window size 12: 0.5111809659720096
-- MSE for window size 13: 0.5212236958918558
-- MSE for window size 14: 0.560333133846591
-- MSE for window size 15: 0.5720110020297591
-- MSE for window size 16: 0.6142808957994075
-- MSE for window size 17: 0.6267014618054143
-- MSE for window size 18: 0.6718895172725348
-- MSE for window size 19: 0.6855775119027617
+- MSE for window size 0: 0.624999999999999
+- MSE for window size 1: 0.33789037759785295
+- MSE for window size 2: 0.17330933149251282
+- MSE for window size 3: 0.117790186449086
+- MSE for window size 4: 0.09764618757552151
+- MSE for window size 5: 0.08415473879595722
+- MSE for window size 6: 0.08839308412518941
+- MSE for window size 7: 0.0865931243621953
+- MSE for window size 8: 0.1027388338920552
+- MSE for window size 9: 0.10639120996408322
+- MSE for window size 10: 0.13101671392175884
+- MSE for window size 11: 0.13814252917305841
+- MSE for window size 12: 0.1693228540403724
+- MSE for window size 13: 0.1788383524256743
+- MSE for window size 14: 0.21544497672475568
+- MSE for window size 15: 0.2268118967732596
+- MSE for window size 16: 0.2678169233358978
+- MSE for window size 17: 0.2804687873830105
+- MSE for window size 18: 0.3248707646558711
+- MSE for window size 19: 0.3384113849710775
 
 <br/><br/>
 
@@ -40,4 +40,4 @@ Reducing the window size of MA Filter causes to reducing of attenuation of the n
 High value of MA Filter leads to higher noise reduction, but we also begin to cut our signal frequencies.
 filter becomes more efficient with high values,but we need to find the optimal value for the window size, so that not to distort the signal, becaus due to LPF filter we can loss high frequencies of the signal while attenuating the noise.
 <br/>
-As we can see the least value of our evaluation is 0.4196, which has been obtained by setting win size to 5. From this value evaluation starts to increase, so the other values aren't optimal.
+As we can see the least value of our evaluation is 0.0841, which has been obtained by setting win size to 5. From this value evaluation starts to increase, so the other values aren't optimal.
