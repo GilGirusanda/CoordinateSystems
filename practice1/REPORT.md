@@ -5,8 +5,6 @@
 ## Objective
 The objective of this assignment is to study and compare the computational complexity of algorithms used for calculating distances between points in Cartesian, polar, and spherical coordinate systems.
 
-![Result of the program computaitions](.\practice1\result.png)
-
 ## Conclusion
 
 ## Results Summary for num of points: 1,000,000
@@ -60,3 +58,5 @@ The objective of this assignment is to study and compare the computational compl
 - Distance calculations are generally faster in the Cartesian coordinate system compared to Polar and Spherical coordinate systems.
 - As the number of points increases, the performance degradation is more noticeable in Polar and Spherical coordinate systems.
 - Spherical is the slowest one.
+
+![Result of the program computaitions](.\result.png)
