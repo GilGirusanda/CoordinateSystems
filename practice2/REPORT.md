@@ -36,7 +36,7 @@ low-pass filters (LPF).
 <br/><br/>
 
 Reducing the window size of MA Filter causes to reducing of attenuation of the noise. Hence, efficiency of the filter is far less, stop-band attenuation becomes huge.
-<br/>
+<br/><br/>
 High value of MA Filter leads to higher noise reduction, but we also begin to cut our signal frequencies.
 filter becomes more efficient with high values,but we need to find the optimal value for the window size, so that not to distort the signal, becaus due to LPF filter we can loss high frequencies of the signal while attenuating the noise.
 <br/>
