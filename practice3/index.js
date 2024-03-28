@@ -26,23 +26,6 @@ function trilateration(x1, y1, r1, x2, y2, r2, x3, y3, r3) {
 	}
 }
 
-// function checkAnswer(result, given) {
-// 	if(result.x === given.objX && result.y === given.objY)
-//		console.log(`Correct! result:${JSON.stringify(result)}, given:${JSON.stringify(given)}`)
-//	else
-//		console.log(`Error! result:${JSON.stringify(result)}, given:${JSON.stringify(given)}`)
-// }
-
-//var x1 = 0, y1 = 0, r1 = 10;
-//var x2 = 10, y2 = 0, r2 = 10;
-//var x3 = 5, y3 = 10, r3 = 10;
-
-//var given = {objX: 5, objY: 3.75};
-
-//var result = trilateration(x1, y1, r1, x2, y2, r2, x3, y3, r3);
-//checkAnswer(result, given)
-
-
 function getDistance(point2, point1) { 
 	return Math.sqrt((point2.x - point1.x) ** 2 + (point2.y - point1.y) ** 2);
 }
@@ -72,12 +55,6 @@ var result = performTrilateration(baseStation1, baseStation2, baseStation3, dist
 
 console.log("\t1) Object's Coordinates Without Noise:", result.x.toFixed(2), "y:", result.y.toFixed(2));
 
-// Add noise to measured distances
-// var noiseVariance = 1; // Variance of noise
-// var noise1 = Math.random() * noiseVariance;
-// var noise2 = Math.random() * noiseVariance;
-// var noise3 = Math.random() * noiseVariance;
-
 // Recalculate distances from object to base stations, but WITH NOISE
 var noisyDistanceToBase1 = Math.sqrt((objectCoordinates.x + noise1 - baseStation1.x)**2 + (objectCoordinates.y + noise1 - baseStation1.y)**2);
 var noisyDistanceToBase2 = Math.sqrt((objectCoordinates.x + noise2 - baseStation2.x)**2 + (objectCoordinates.y + noise2 - baseStation2.y)**2);
@@ -90,25 +67,14 @@ console.log("\t2) Object's Coordinates With Noise:", "x:", result.x.toFixed(2), 
 //console.log("\tNoise: ", noise1, noise2, noise3);
 
 
-
-
 // Triangulation
 
 console.log("\nTriangulation");
 
 function triangulation(x1, y1, theta1, x2, y2, theta2) {
-	// Convert angles from degrees to radians if necessary
-	// theta1 = theta1 * Math.PI / 180;
-	// theta2 = theta2 * Math.PI / 180;
-	// Calculate tangents of the angles
 	
 	let tanTheta1 = Math.tan(theta1);
 	let tanTheta2 = Math.tan(theta2);
-
-	// Solve the system of equations for x3 and y3
-	// Based on the equations:
-	// tanTheta1 = (y1 - y3) / (x1 - x3)
-	// tanTheta2 = (y2 - y3) / (x2 - x3)
 	
 	// Transform the equations to express x3 and y3
 	let x3 = ((y1 - y2) + tanTheta2 * x2 - tanTheta1 * x1) / (tanTheta2 - tanTheta1);
@@ -120,10 +86,6 @@ function triangulation(x1, y1, theta1, x2, y2, theta2) {
 function calculateAngle(x1, y1, x2, y2) {
     return Math.atan2(y2 - y1, x2 - x1);
 }
-
-// let x1 = -2, y1 = 2, theta1 = Math.PI * 3 / 4; // 45 degrees in radians
-// let x2 = 2, y2 =2, theta2 = Math.PI / 4; // 45 degrees in radians
-// let position = triangulation(x1, y1, theta1, x2, y2, theta2);
 
 let x1 = -2, y1 = 2;// station1
 let x2 = 2, y2 = 2;// station2
@@ -139,13 +101,6 @@ let positionWithNoise = triangulation(x1, y1, theta1WithNoise, x2, y2, theta2Wit
 
 console.log(`\t1) Coordinates of the object Without noise: x = ${position.x.toFixed(2)}, y = ${position.y.toFixed(2)}`);
 console.log(`\t2) Coordinates of the object With noise: x = ${positionWithNoise.x.toFixed(2)}, y = ${positionWithNoise.y.toFixed(2)}`);
-
-
-
-
-
-
-
 
 // Gradient Descent
 console.log("\nGradient Descent");
