@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ukraine SVG Map | Done by Yehor Babynin</title>
+	<style>
+		.no-select {
+			user-select: none;
+		}
+		
+		body {
+			background-color: black;
+			color: white;
+		}
+		
+		h1 {
+			font-size: 48px;
+			text-align: center;
+			color: yellow;
+		}
+		
+		h1 > span {
+			text-align: center;
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+<h1>Map of <span>Ukraine</span></h1>
+<script>
+	function latLonToCartesian(latitude, longitude) {
+		// Earth radius in kilometers
+		const R = 6371;
+
+		// Convert latitude and longitude from degrees to radians
+		const latRad = latitude * Math.PI / 180;
+		const lonRad = longitude * Math.PI / 180;
+
+		// Calculate Cartesian coordinates using Mercator projection
+		const x = R * lonRad;
+		const y = R * Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+
+		return [ x, y ];
+	}
+
+	function rotateCartesian(x, y, angleDegrees) {
+		// Convert angle from degrees to radians
+		const angleRadians = angleDegrees * Math.PI / 180;
+
+		// Perform rotation using trigonometric formulas
+		const newX = x * Math.cos(angleRadians) - y * Math.sin(angleRadians);
+		const newY = x * Math.sin(angleRadians) + y * Math.cos(angleRadians);
+
+		return [ newX, newY ];
+	}
+
+	function transform(c) {
+		const scalingFactor = 1/2;
+		const [ x, y ] = latLonToCartesian(c[0], c[1]);
+		let [xRotated, yRotated] = rotateCartesian(x, y, -90);
+		
+		let xScaled = (xRotated * scalingFactor);
+		let yScaled = (yRotated * scalingFactor);
+
+		let [xFinal, yFinal] = [xScaled - 1900, yScaled + 2750];
+
+		return [xFinal, yFinal]; 
+	}
+
+	function drawUkr(svg, svgNS) {
+		// Fetch json data
+		fetch('world-administrative-boundaries.json')
+		.then(response => response.json())
+		.then(data => {
+			const ukraineData = data.filter(c=>c.iso3==="UKR")[0];
+			const coords = ukraineData.geo_shape.geometry.coordinates[0];// length = 1289
+			const scalingFactor = 1/2;// 1/10
+			const xDisplacement = -500;//-470;
+			const yDisplacement = -250;//-220;
+			const mirrorCoeffX = 1;
+			const mirrorCoeffY = 1;
+
+			let translatedCoords = coords.map(c => {
+				return transform(c);
+			});
+				
+			const points = translatedCoords.map(point => point.join(',')).join(' ');
+			var polygon = document.createElementNS(svgNS, "polygon");
+			polygon.setAttribute("points", points);
+			polygon.setAttribute("fill", "none");
+			polygon.setAttribute("stroke", "purple");
+			polygon.setAttribute("stroke-width", "3");
+			svg.appendChild(polygon);
+	
+			let centers = [
+				    [34.0522, 44.9572],    // Autonomous Republic of Crimea (Simferopol)
+					[28.4816, 49.2342],    // Vinnytsia Oblast (Vinnytsia)
+					[25.6164, 50.7472],    // Volyn Oblast (Lutsk)
+					[35.0461, 48.4647],    // Dnipropetrovsk Oblast (Dnipro)
+					[37.7721, 48.0053],    // Donetsk Oblast (Donetsk)
+					[28.7224, 50.2649],    // Zhytomyr Oblast (Zhytomyr)
+					[22.3010, 48.6208],    // Zakarpattia Oblast (Uzhhorod)
+					[35.1675, 47.8388],    // Zaporizhzhia Oblast (Zaporizhzhia)
+					[24.7111, 48.9226],    // Ivano-Frankivsk Oblast (Ivano-Frankivsk)
+					[30.6466, 50.4512],    // Kyiv Oblast (Kyiv)
+					[32.2532, 48.5216],    // Kirovohrad Oblast (Kropyvnytskyi)
+					[39.2953, 48.5671],    // Luhansk Oblast (Luhansk)
+					[24.0305, 49.8397],    // Lviv Oblast (Lviv)
+					[32.0377, 46.9727],    // Mykolaiv Oblast (Mykolaiv)
+					[30.7233, 46.4825],    // Odesa Oblast (Odesa)
+					[34.5407, 49.5921],    // Poltava Oblast (Poltava)
+					[26.2675, 50.6200],    // Rivne Oblast (Rivne)
+					[34.7805, 50.9182],    // Sumy Oblast (Sumy)
+					[25.5969, 49.5468],    // Ternopil Oblast (Ternopil)
+					[36.2527, 49.8397],    // Kharkiv Oblast (Kharkiv)
+					[32.6134, 46.6225],    // Kherson Oblast (Kherson)
+					[26.9524, 49.4224],    // Khmelnytskyi Oblast (Khmelnytskyi)
+					[32.0633, 49.4444],    // Cherkasy Oblast (Cherkasy)
+					[25.9317, 48.2915],    // Chernivtsi Oblast (Chernivtsi)
+					[31.2870, 51.5074],    // Chernihiv Oblast (Chernihiv)
+					[33.5186, 44.7528]     // Sevastopol (Sevastopol)
+			];
+	
+			let centersText = [
+				"Autonomous Republic of Crimea (Simferopol)",
+				"Vinnytsia Oblast (Vinnytsia)",
+				"Volyn Oblast (Lutsk)",
+				"Dnipropetrovsk Oblast (Dnipro)",
+				"Donetsk Oblast (Donetsk)",
+				"Zhytomyr Oblast (Zhytomyr)",
+				"Zakarpattia Oblast (Uzhhorod)",
+				"Zaporizhzhia Oblast (Zaporizhzhia)",
+				"Ivano-Frankivsk Oblast (Ivano-Frankivsk)",
+				"Kyiv Oblast (Kyiv)",
+				"Kirovohrad Oblast (Kropyvnytskyi)",
+				"Luhansk Oblast (Luhansk)",
+				"Lviv Oblast (Lviv)",
+				"Mykolaiv Oblast (Mykolaiv)",
+				"Odesa Oblast (Odesa)",
+				"Poltava Oblast (Poltava)",
+				"Rivne Oblast (Rivne)",
+				"Sumy Oblast (Sumy)",
+				"Ternopil Oblast (Ternopil)",
+				"Kharkiv Oblast (Kharkiv)",
+				"Kherson Oblast (Kherson)",
+				"Khmelnytskyi Oblast (Khmelnytskyi)",
+				"Cherkasy Oblast (Cherkasy)",
+				"Chernivtsi Oblast (Chernivtsi)",
+				"Chernihiv Oblast (Chernihiv)",
+				"Sevastopol (Sevastopol)"
+			];
+
+			centers = centers.map(c=> transform(c));
+			centers.map((c, index) => {
+				const [x, y] = c;
+
+				// create anchor point element
+				const circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+				circle.setAttribute('cx', x.toString()); // Center x-coordinate
+				circle.setAttribute('cy', y.toString()); // Center y-coordinate
+				circle.setAttribute('r', '15'); // Radius
+				circle.setAttribute('fill', '#ac94f4'); // Fill color
+				svg.appendChild(circle);
+
+				// create text element
+				const text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+				text.setAttribute('x', x.toString()); // x-coordinate of text
+				text.setAttribute('y', y.toString()); // y-coordinate of text
+				text.setAttribute('dy', '-20'); // Adjust vertical position of text
+				text.setAttribute('text-anchor', 'middle'); // Center text horizontally
+				text.setAttribute('fill', 'white');
+				text.setAttribute('font-size', '24px'); // Text size
+				text.textContent = centersText[index]; // Text content c[2]
+				text.classList.add('no-select');
+
+				// hide text initially
+				text.style.display = 'none';
+				svg.appendChild(text);
+
+				// on hover
+				circle.addEventListener('mouseover', function() {
+					text.style.display = 'block'; // show text on hover
+				});
+
+				// on mouseout
+				circle.addEventListener('mouseout', function() {
+					text.style.display = 'none'; // hide text on mouseout
+				});
+			});
+		})
+		.catch(error => console.error('Error reading JSON file:', error));
+	}
+
+	function drawOnClick() {
+		clearSVG();
+		drawUkr(svg, svgNS);
+	}
+
+	function clearSVG() {
+		const svg = document.querySelector('svg'); // select the first SVG element on the page
+
+		// remove all child elements of the SVG element
+		while (svg.firstChild) {
+			svg.removeChild(svg.firstChild);
+		}
+	}
+
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgNS, "svg");
+    
+	document.addEventListener("DOMContentLoaded", function() {
+        // Create SVG container
+		svg.setAttribute("viewBox", "-1000 -600 2000 1200");
+        svg.setAttribute("width", "2000");
+        svg.setAttribute("height", "1200");// 1200
+        document.body.appendChild(svg);
+		
+		const rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+        rect.setAttribute('x', '-1000');
+        rect.setAttribute('y', '-600');
+        rect.setAttribute('width', '200%');
+        rect.setAttribute('height', '200%');
+        svg.appendChild(rect);
+		
+		//const rectOrigin = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+        //rectOrigin.setAttribute('x', '-20');
+        //rectOrigin.setAttribute('y', '-20');
+        //rectOrigin.setAttribute('width', '40');
+        //rectOrigin.setAttribute('height', '40');
+		//rectOrigin.setAttribute('fill', 'red');
+        //svg.appendChild(rectOrigin);
+
+		
+		drawUkr(svg, svgNS);
+    });
+</script>
+</body>
+</html>
