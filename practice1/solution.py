@@ -109,6 +109,10 @@ def distance_spherical(p1, p2):
         np.sin(p1[:, 1]) * np.sin(p2[:, 1]) * angle_difference + np.cos(p1[:, 1]) * np.cos(p2[:, 1])), 0))
     return distance
 
+def shfl(arr):
+    np.random.shuffle(arr)
+    return arr
+
 def bench(num_points):
     """
         Benchmark various coordinate transformations and distance calculations and
@@ -153,7 +157,7 @@ def bench(num_points):
 
     # Timer for distance calculations in Cartesian Coordinate System
     start_time = time.perf_counter()
-    dist_cartesian = distance_cartesian(cartesian_points, cartesian_points)
+    dist_cartesian = distance_cartesian(cartesian_points, shfl(cartesian_points.copy()))
     calculation_time_cartesian = time.perf_counter() - start_time
 
     print(
@@ -161,14 +165,14 @@ def bench(num_points):
 
     # Timer for distance calculations in Polar Coordinate System
     start_time = time.perf_counter()
-    dist_polar = distance_polar(polar_points, polar_points)
+    dist_polar = distance_polar(polar_points, shfl(polar_points.copy()))
     calculation_time_polar = time.perf_counter() - start_time
 
     print(f"Time taken for distance calculations in Polar Coordinate System: {calculation_time_polar:.6f} seconds")
 
     # Timer for distance calculations in Spherical Coordinate System
     start_time = time.perf_counter()
-    dist_spherical = distance_spherical(spherical_points, spherical_points)
+    dist_spherical = distance_spherical(spherical_points, shfl(spherical_points.copy()))
     calculation_time_spherical = time.perf_counter() - start_time
 
     print(
